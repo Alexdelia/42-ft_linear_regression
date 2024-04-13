@@ -4,12 +4,61 @@ version = "0.1.0"
 description = "program that predicts the price of a car by using a linear function train with a gradient descent algorithm"
 authors = ["adelille <adelille@student.42.fr>"]
 license = "GPL-3.0"
-readme = "README.md"
+packages = [
+	{ include = "predict", from = "src" },
+	{ include = "train", from = "src" },
+]
+# readme = "README.md"
+
+[tool.poe.tasks.predict]
+script = "predict.main:main"
+help = "Predict the price of a car"
+
+[tool.poe.tasks.train]
+script = "train.main:main"
+help = "Train the model"
+
+[tool.poe.tasks.lint]
+cmd = "ruff check"
+help = "Lint the codebase"
+
+[tool.poe.tasks.format]
+cmd = "ruff format"
+help = "Format the codebase"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+poethepoet = "^0.25.0"
+pydantic = "^2.7.0"
+result = "^0.16.1"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+cache-dir = ".cache/ruff"
+target-version = "py312"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+explicit-preview-rules = true
+select = ["ALL"]
+ignore = [
+	# deprecated rules will be automaticaly skipped from `ALL` in ruff v0.4.0
+	"ANN101", # missing-type-self  # deprecated
+	"ANN102", # missing-type-cls   # deprecated
+
+	# docstring
+	"D203", # one-blank-line-before-class
+	"D212", # multi-line-summary-first-line
+
+	# format
+	"COM812", # missing-trailing-comma	# still keep other COM
+	"ISC001", # single-line-implicit-string-concatenation
+]
