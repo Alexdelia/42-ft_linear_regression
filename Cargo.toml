@@ -11,4 +11,5 @@ path = "src/train/main.rs"
 
 [dependencies]
 ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
+hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 csv = "1.3.0"
