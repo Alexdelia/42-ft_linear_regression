@@ -11,8 +11,8 @@ pub type Data = Vec<Record>;
 // pub type Record = (Float, Float);
 
 pub struct Record {
-	x: Float,
-	y: Float,
+	pub x: Float,
+	pub y: Float,
 }
 
 pub fn parse<P: AsRef<Path> + Clone>(path: P) -> hmerr::Result<Data>
@@ -33,12 +33,8 @@ where
 
 	for (i, result) in rdr.records().enumerate() {
 		let record = result.map_err(|e| ioe!(path.clone(), e))?;
-		eprintln!("{i}\t{record:?}");
 
-		let record = parse_record(&path, i, record)?;
-		eprintln!("x: {x}\ty: {y}", x = record.x, y = record.y);
-
-		ret.push(record);
+		ret.push(parse_record(&path, i, record)?);
 	}
 
 	Ok(ret)
