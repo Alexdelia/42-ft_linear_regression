@@ -8,8 +8,7 @@ use crate::Float;
 
 pub type Data = Vec<Record>;
 
-// pub type Record = (Float, Float);
-
+#[derive(Clone)]
 pub struct Record {
 	pub x: Float,
 	pub y: Float,
