@@ -1,18 +1,20 @@
 mod arg;
+mod learn;
 mod load;
 
-const LEARNING_RATE: f64 = 0.01;
+// TODO: better error message for file not found
+// TODO: better error for invalid record in csv
+// TODO: set learning rate through arg 2
 
-fn estimate(theta0: f64, theta1: f64, x: f64) -> f64 {
-	theta0 + (theta1 * x)
-}
+type Float = f64;
+pub use load::{Data, Record};
 
 fn main() -> hmerr::Result<()> {
 	println!("Hello, world!");
 
 	let csv = arg::csv();
 
-	load::parse(csv)?;
+	let data = load::parse(csv)?;
 
 	Ok(())
 }
