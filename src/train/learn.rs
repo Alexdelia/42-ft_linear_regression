@@ -53,7 +53,7 @@ fn guess(data: &Data, theta0: Float, theta1: Float, learning_rate: Float) -> (Fl
 	}
 
 	(
-		theta0 - learning_rate * (1.0 / data.len() as Float) * sum.0,
-		theta1 - learning_rate * (1.0 / data.len() as Float) * sum.1,
+		theta0 - learning_rate * (sum.0 / data.len() as Float),
+		theta1 - learning_rate * (sum.1 / data.len() as Float),
 	)
 }
