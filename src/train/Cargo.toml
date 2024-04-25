@@ -1,0 +1,12 @@
+[package]
+name = "train"
+version = "0.1.0"
+edition = "2021"
+authors = ["adelille"]
+description = "train on given data to generate theta0 and theta1"
+
+[dependencies]
+estimate = { path = "../estimate" }
+load = { path = "../load" }
+ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
+hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }

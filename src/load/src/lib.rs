@@ -1,24 +1,23 @@
 use std::path::Path;
+use std::str::FromStr;
 
 use ansi::abbrev::{B, D, G, M, R};
 use csv::StringRecord;
 use hmerr::{ioe, pfe, ple, pwe};
 
-use crate::Float;
+pub type ParsedData<F> = Vec<Record<F>>;
 
-pub type Data = Vec<Record>;
-
-#[derive(Clone)]
-pub struct Record {
-	pub x: Float,
-	pub y: Float,
+pub struct Record<F> {
+	pub x: F,
+	pub y: F,
 }
 
-pub fn parse<P: AsRef<Path> + Clone>(path: P) -> hmerr::Result<Data>
+pub fn parse<P: AsRef<Path> + Clone, F: FromStr>(path: P) -> hmerr::Result<ParsedData<F>>
 where
 	String: From<P>,
+	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
 {
-	let mut ret: Data = Vec::new();
+	let mut ret: ParsedData<F> = Vec::new();
 
 	let mut rdr = csv::Reader::from_path(&path).map_err(|e| {
 		if !e.is_io_error() {
@@ -39,13 +38,14 @@ where
 	Ok(ret)
 }
 
-fn parse_record<P: AsRef<Path> + Clone>(
+fn parse_record<P: AsRef<Path> + Clone, F: FromStr>(
 	path: &P,
 	i: usize,
 	record: StringRecord,
-) -> hmerr::Result<Record>
+) -> hmerr::Result<Record<F>>
 where
 	String: From<P>,
+	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
 {
 	let index = i + 2;
 
@@ -63,18 +63,19 @@ where
 	})
 }
 
-fn parse_cell<P: AsRef<Path> + Clone>(
+fn parse_cell<P: AsRef<Path> + Clone, F: FromStr>(
 	path: &P,
 	index: usize,
 	record: &StringRecord,
 	y: bool,
-) -> hmerr::Result<Float>
+) -> hmerr::Result<F>
 where
 	String: From<P>,
+	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
 {
 	let cell = record.get(y as usize).unwrap(); // record.len() is being checked above
 
-	match cell.parse::<Float>() {
+	match cell.parse::<F>() {
 		Ok(n) => Ok(n),
 		Err(e) => {
 			let element = format!("{B}{M}<{element}>{D}", element = if y { "y" } else { "x" });

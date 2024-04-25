@@ -1,22 +1,10 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Mul};
 
 pub fn estimate<F>(theta0: F, theta1: F, x: F) -> F
 where
 	F: Add<F, Output = F> + Mul<F, Output = F> + Sized,
 {
 	theta0 + (theta1 * x)
-}
-
-pub fn normilized_estimate<F>(theta0: F, theta1: F, x: F, min: F, max: F) -> F
-where
-	F: Add<F, Output = F>
-		+ Sub<F, Output = F>
-		+ Mul<F, Output = F>
-		+ Div<F, Output = F>
-		+ Sized
-		+ Copy,
-{
-	theta0 + (theta1 * ((x - min) / (max - min)))
 }
 
 #[cfg(test)]
