@@ -1,3 +1,7 @@
+### binary ###
+train
+predict
+
 ### cache ###
 .cache/
 

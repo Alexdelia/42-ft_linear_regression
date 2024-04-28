@@ -9,8 +9,8 @@ pub fn usage(args: &[String]) {
 	}
 
 	let cmd = match args.get(0) {
-		Some(cmd) => format!("./{cmd}"),
-		None => "cargo run".to_string(),
+		Some(cmd) => cmd,
+		None => "cargo run",
 	};
 
 	println!("usage: {B}{cmd} {M}<CSV> <iteration> <learning rate>{D}\n");
