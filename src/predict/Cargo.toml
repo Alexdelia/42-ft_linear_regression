@@ -1,0 +1,12 @@
+[package]
+name = "predict"
+version = "0.1.0"
+edition = "2021"
+authors = ["adelille"]
+description = "predict y based on x"
+
+[dependencies]
+estimate = { path = "../estimate" }
+load = { path = "../load" }
+ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
+hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }

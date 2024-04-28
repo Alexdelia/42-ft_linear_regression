@@ -4,72 +4,20 @@ use load::Coord;
 
 use crate::{ComputedData, Float};
 
-pub fn learn(data: ComputedData<Float>, iteration: usize, learning_rate: Float) -> (Float, Float) {
-	let mut data = data;
-
-	normalize(&mut data);
-
+pub fn learn(data: &ComputedData<Float>, iteration: usize, learning_rate: Float) -> (Float, Float) {
 	let mut theta0 = 0.0;
 	let mut theta1 = 0.0;
 
 	for _ in 0..iteration {
-		(theta0, theta1) = guess(&data, theta0, theta1, learning_rate);
+		(theta0, theta1) = guess(data, theta0, theta1, learning_rate);
 	}
 
-	(theta0, theta1)
+	dbg!(theta0, theta1);
+
+	unnormalize_theta(theta0, theta1, &data)
 }
 
-fn normalize(data: &mut ComputedData<Float>) {
-	let mut min = Coord { x: 0.0, y: 0.0 };
-	let mut max = Coord { x: 0.0, y: 0.0 };
-
-	for Coord { x, y } in data.set.iter() {
-		if *x < min.x {
-			min.x = *x;
-		} else {
-			max.x = *x;
-		}
-
-		if *y < min.y {
-			min.y = *y;
-		} else {
-			max.y = *y;
-		}
-	}
-
-	for Coord { x, y } in data.set.iter_mut() {
-		*x = (*x - min.x) / (max.x - min.x);
-		*y = (*y - min.y) / (max.y - min.y);
-	}
-}
-
-pub fn unnormalize_theta(
-	theta0: Float,
-	theta1: Float,
-	data: &ComputedData<Float>,
-) -> (Float, Float) {
-	let mut min = Coord { x: 0.0, y: 0.0 };
-	let mut max = Coord { x: 0.0, y: 0.0 };
-
-	for Coord { x, y } in data.set.iter() {
-		if *x < min.x {
-			min.x = *x;
-		} else {
-			max.x = *x;
-		}
-
-		if *y < min.y {
-			min.y = *y;
-		} else {
-			max.y = *y;
-		}
-	}
-
-	(
-		theta0 * (max.y - min.y) + min.y,
-		theta1 * (max.y - min.y) / (max.x - min.x),
-	)
-}
+fn unnormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {}
 
 fn guess(
 	data: &ComputedData<Float>,
@@ -79,7 +27,7 @@ fn guess(
 ) -> (Float, Float) {
 	let mut sum: (Float, Float) = (0.0, 0.0);
 
-	for Coord { x, y } in data.set.iter() {
+	for Coord { x, y } in data.set.normalized.iter() {
 		let guess = estimate(theta0, theta1, *x);
 		let diff = guess - y;
 
@@ -88,7 +36,7 @@ fn guess(
 	}
 
 	(
-		theta0 - learning_rate * (sum.0 / data.set.len() as Float),
-		theta1 - learning_rate * (sum.1 / data.set.len() as Float),
+		theta0 - learning_rate * (sum.0 / data.set.normalized.len() as Float),
+		theta1 - learning_rate * (sum.1 / data.set.normalized.len() as Float),
 	)
 }

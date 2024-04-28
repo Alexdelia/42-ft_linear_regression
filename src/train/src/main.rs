@@ -28,40 +28,20 @@ fn main() -> hmerr::Result<()> {
 
 	let data = compute(data);
 
-	let (theta0, theta1) = learn::learn(data, iteration, learning_rate);
+	let (theta0, theta1) = learn::learn(&data, iteration, learning_rate);
 
-	let data = load::parse::<_, Float>(csv)?;
-	let data = compute(data);
-	let (utheta0, utheta1) = learn::unnormalize_theta(theta0, theta1, &data);
-
-	eprintln!(
-		"theta0:\t{theta0}\ttheta1:\t{theta1}",
-		theta0 = theta0,
-		theta1 = theta1
-	);
-	eprintln!(
-		"utheta0:\t{utheta0}\tutheta1:\t{utheta1}",
-		utheta0 = utheta0,
-		utheta1 = utheta1
-	);
-
-	let data = load::parse::<_, Float>(csv)?;
-
-	for Coord { x, y } in data.iter() {
+	for Coord { x, y } in data.set.raw.iter() {
 		eprintln!(
-			"{x}km\n{y}€\n{estimate}€\n{normilized_estimate}€\n",
+			"{x}km\n= {y}€\n~ {estimate}€\n",
 			x = x,
 			y = y,
 			estimate = estimate::estimate(theta0, theta1, *x),
-			normilized_estimate = estimate::estimate(utheta0, utheta1, *x),
 		);
 	}
 
-	dbg!(utheta0, utheta1);
+	dbg!(theta0, theta1);
 
-	let data = compute(data);
-
-	graph::graph(&data, utheta0, utheta1)?;
+	graph::graph(&data, theta0, theta1)?;
 
 	Ok(())
 }

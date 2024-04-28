@@ -2,13 +2,9 @@ use load::{Coord, ParsedData};
 
 use crate::Float;
 
-pub struct ComputedData<F> {
-	pub set: ParsedData<F>,
-	pub min: Coord<F>,
-	pub max: Coord<F>,
-}
+use super::AnalyzedData;
 
-pub fn compute(data: ParsedData<Float>) -> ComputedData<Float> {
+pub fn analyze(data: &ParsedData<Float>) -> AnalyzedData<Float> {
 	let first = data.first().unwrap_or(&Coord { x: 0.0, y: 0.0 });
 	let mut min = Coord {
 		x: first.x,
@@ -33,11 +29,7 @@ pub fn compute(data: ParsedData<Float>) -> ComputedData<Float> {
 		}
 	}
 
-	ComputedData {
-		set: data,
-		min,
-		max,
-	}
+	AnalyzedData { min, max }
 }
 
 #[cfg(test)]
@@ -45,7 +37,7 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_compute() {
+	fn analyze_basic() {
 		let data = vec![
 			Coord { x: 42.0, y: -69.0 },
 			Coord {
@@ -55,27 +47,27 @@ mod tests {
 			Coord { x: 84.0, y: 0.0 },
 		];
 
-		let computed = compute(data);
+		let a = analyze(&data);
 
-		assert_eq!(computed.min.x, -21.0);
-		assert_eq!(computed.min.y, -69.0);
-		assert_eq!(computed.max.x, 84.0);
-		assert_eq!(computed.max.y, 2048.0);
+		assert_eq!(a.min.x, -21.0);
+		assert_eq!(a.min.y, -69.0);
+		assert_eq!(a.max.x, 84.0);
+		assert_eq!(a.max.y, 2048.0);
 	}
 
 	#[test]
-	fn test_compute_above_0() {
+	fn analyze_above_0() {
 		let data = vec![
 			Coord { x: 42.0, y: 69.0 },
 			Coord { x: 21.0, y: 2048.0 },
 			Coord { x: 84.0, y: 90.0 },
 		];
 
-		let computed = compute(data);
+		let a = analyze(&data);
 
-		assert_eq!(computed.min.x, 21.0);
-		assert_eq!(computed.min.y, 69.0);
-		assert_eq!(computed.max.x, 84.0);
-		assert_eq!(computed.max.y, 2048.0);
+		assert_eq!(a.min.x, 21.0);
+		assert_eq!(a.min.y, 69.0);
+		assert_eq!(a.max.x, 84.0);
+		assert_eq!(a.max.y, 2048.0);
 	}
 }
