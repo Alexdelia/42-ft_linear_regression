@@ -1,6 +1,6 @@
 use estimate::estimate;
 
-use load::Record;
+use load::Coord;
 
 use crate::{ComputedData, Float};
 
@@ -20,10 +20,10 @@ pub fn learn(data: ComputedData<Float>, iteration: usize, learning_rate: Float) 
 }
 
 fn normalize(data: &mut ComputedData<Float>) {
-	let mut min = Record { x: 0.0, y: 0.0 };
-	let mut max = Record { x: 0.0, y: 0.0 };
+	let mut min = Coord { x: 0.0, y: 0.0 };
+	let mut max = Coord { x: 0.0, y: 0.0 };
 
-	for Record { x, y } in data.set.iter() {
+	for Coord { x, y } in data.set.iter() {
 		if *x < min.x {
 			min.x = *x;
 		} else {
@@ -37,7 +37,7 @@ fn normalize(data: &mut ComputedData<Float>) {
 		}
 	}
 
-	for Record { x, y } in data.set.iter_mut() {
+	for Coord { x, y } in data.set.iter_mut() {
 		*x = (*x - min.x) / (max.x - min.x);
 		*y = (*y - min.y) / (max.y - min.y);
 	}
@@ -48,10 +48,10 @@ pub fn unnormalize_theta(
 	theta1: Float,
 	data: &ComputedData<Float>,
 ) -> (Float, Float) {
-	let mut min = Record { x: 0.0, y: 0.0 };
-	let mut max = Record { x: 0.0, y: 0.0 };
+	let mut min = Coord { x: 0.0, y: 0.0 };
+	let mut max = Coord { x: 0.0, y: 0.0 };
 
-	for Record { x, y } in data.set.iter() {
+	for Coord { x, y } in data.set.iter() {
 		if *x < min.x {
 			min.x = *x;
 		} else {
@@ -79,7 +79,7 @@ fn guess(
 ) -> (Float, Float) {
 	let mut sum: (Float, Float) = (0.0, 0.0);
 
-	for Record { x, y } in data.set.iter() {
+	for Coord { x, y } in data.set.iter() {
 		let guess = estimate(theta0, theta1, *x);
 		let diff = guess - y;
 

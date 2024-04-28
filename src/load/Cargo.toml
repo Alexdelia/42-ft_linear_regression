@@ -3,7 +3,7 @@ name = "load"
 version = "0.1.0"
 edition = "2021"
 authors = ["adelille"]
-description = "load csv training data made of Record<F> { x: F, y: F }"
+description = "load csv training data made of Coord<F> { x: F, y: F }"
 
 [dependencies]
 ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }

@@ -1,18 +1,25 @@
-use load::{ParsedData, Record};
+use load::{Coord, ParsedData};
 
 use crate::Float;
 
 pub struct ComputedData<F> {
 	pub set: ParsedData<F>,
-	pub min: Record<F>,
-	pub max: Record<F>,
+	pub min: Coord<F>,
+	pub max: Coord<F>,
 }
 
 pub fn compute(data: ParsedData<Float>) -> ComputedData<Float> {
-	let mut min = Record { x: 0.0, y: 0.0 };
-	let mut max = Record { x: 0.0, y: 0.0 };
+	let first = data.first().unwrap_or(&Coord { x: 0.0, y: 0.0 });
+	let mut min = Coord {
+		x: first.x,
+		y: first.y,
+	};
+	let mut max = Coord {
+		x: first.x,
+		y: first.y,
+	};
 
-	for Record { x, y } in data.iter() {
+	for Coord { x, y } in data.iter().skip(1) {
 		if *x < min.x {
 			min.x = *x;
 		} else if *x > max.x {
@@ -40,12 +47,12 @@ mod tests {
 	#[test]
 	fn test_compute() {
 		let data = vec![
-			Record { x: 42.0, y: -69.0 },
-			Record {
+			Coord { x: 42.0, y: -69.0 },
+			Coord {
 				x: -21.0,
 				y: 2048.0,
 			},
-			Record { x: 84.0, y: 0.0 },
+			Coord { x: 84.0, y: 0.0 },
 		];
 
 		let computed = compute(data);
@@ -59,9 +66,9 @@ mod tests {
 	#[test]
 	fn test_compute_above_0() {
 		let data = vec![
-			Record { x: 42.0, y: 69.0 },
-			Record { x: 21.0, y: 2048.0 },
-			Record { x: 84.0, y: 90.0 },
+			Coord { x: 42.0, y: 69.0 },
+			Coord { x: 21.0, y: 2048.0 },
+			Coord { x: 84.0, y: 90.0 },
 		];
 
 		let computed = compute(data);

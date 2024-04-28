@@ -4,7 +4,7 @@ pub use compute::ComputedData;
 mod graph;
 mod learn;
 
-use load::Record;
+use load::Coord;
 use std::env;
 
 use crate::compute::compute;
@@ -14,8 +14,6 @@ type Float = f64;
 const DEFAULT_DATA_FILE: &str = "ressource/data.csv";
 const DEFAULT_ITERATION: usize = 100000;
 const DEFAULT_LEARNING_RATE: Float = 0.01;
-
-const OUTPUT_GRAPH: &str = "output/graph.png";
 
 fn main() -> hmerr::Result<()> {
 	let args = env::args().collect::<Vec<String>>();
@@ -49,7 +47,7 @@ fn main() -> hmerr::Result<()> {
 
 	let data = load::parse::<_, Float>(csv)?;
 
-	for Record { x, y } in data.iter() {
+	for Coord { x, y } in data.iter() {
 		eprintln!(
 			"{x}km\n{y}€\n{estimate}€\n{normilized_estimate}€\n",
 			x = x,

@@ -5,9 +5,9 @@ use ansi::abbrev::{B, D, G, M, R};
 use csv::StringRecord;
 use hmerr::{ioe, pfe, ple, pwe};
 
-pub type ParsedData<F> = Vec<Record<F>>;
+pub type ParsedData<F> = Vec<Coord<F>>;
 
-pub struct Record<F> {
+pub struct Coord<F> {
 	pub x: F,
 	pub y: F,
 }
@@ -37,7 +37,7 @@ where
 
 	if ret.is_empty() {
 		return pfe!(
-			"CSV file should contain at least one record",
+			"CSV file should contain at least one Coord",
 			f:path.clone(),
 		)?;
 	}
@@ -49,7 +49,7 @@ fn parse_record<P: AsRef<Path> + Clone, F: FromStr>(
 	path: &P,
 	i: usize,
 	record: StringRecord,
-) -> hmerr::Result<Record<F>>
+) -> hmerr::Result<Coord<F>>
 where
 	String: From<P>,
 	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
@@ -58,13 +58,13 @@ where
 
 	if record.len() < 2 {
 		return pfe!(
-			"CSV record should have 2 elements\n<x> <y>",
+			"CSV Coord should have 2 elements\n<x> <y>",
 			f:path.clone(),
 			l:ple!(string_record_into_line(record), i:index),
 		)?;
 	}
 
-	Ok(Record {
+	Ok(Coord {
 		x: parse_cell(&path, index, &record, false)?,
 		y: parse_cell(&path, index, &record, true)?,
 	})
@@ -80,7 +80,7 @@ where
 	String: From<P>,
 	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
 {
-	let cell = record.get(y as usize).unwrap(); // record.len() is being checked above
+	let cell = record.get(y as usize).unwrap(); // Coord.len() is being checked above
 
 	match cell.parse::<F>() {
 		Ok(n) => Ok(n),
