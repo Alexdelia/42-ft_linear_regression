@@ -55,4 +55,20 @@ mod tests {
 		assert_eq!(computed.max.x, 84.0);
 		assert_eq!(computed.max.y, 2048.0);
 	}
+
+	#[test]
+	fn test_compute_above_0() {
+		let data = vec![
+			Record { x: 42.0, y: 69.0 },
+			Record { x: 21.0, y: 2048.0 },
+			Record { x: 84.0, y: 90.0 },
+		];
+
+		let computed = compute(data);
+
+		assert_eq!(computed.min.x, 21.0);
+		assert_eq!(computed.min.y, 69.0);
+		assert_eq!(computed.max.x, 84.0);
+		assert_eq!(computed.max.y, 2048.0);
+	}
 }

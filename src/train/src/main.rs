@@ -1,6 +1,7 @@
 mod arg;
 mod compute;
 pub use compute::ComputedData;
+mod graph;
 mod learn;
 
 use load::Record;
@@ -13,6 +14,8 @@ type Float = f64;
 const DEFAULT_DATA_FILE: &str = "ressource/data.csv";
 const DEFAULT_ITERATION: usize = 100000;
 const DEFAULT_LEARNING_RATE: Float = 0.01;
+
+const OUTPUT_GRAPH: &str = "output/graph.png";
 
 fn main() -> hmerr::Result<()> {
 	let args = env::args().collect::<Vec<String>>();
@@ -57,6 +60,10 @@ fn main() -> hmerr::Result<()> {
 	}
 
 	dbg!(utheta0, utheta1);
+
+	let data = compute(data);
+
+	graph::graph(&data, utheta0, utheta1)?;
 
 	Ok(())
 }

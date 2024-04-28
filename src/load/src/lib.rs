@@ -35,6 +35,13 @@ where
 		ret.push(parse_record(&path, i, record)?);
 	}
 
+	if ret.is_empty() {
+		return pfe!(
+			"CSV file should contain at least one record",
+			f:path.clone(),
+		)?;
+	}
+
 	Ok(ret)
 }
 

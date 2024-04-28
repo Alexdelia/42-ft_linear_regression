@@ -1,2 +1,3 @@
 [workspace]
 members = ["src/load", "src/estimate", "src/train"]
+resolver = "2"
