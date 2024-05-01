@@ -2,19 +2,37 @@ use estimate::estimate;
 
 use load::Coord;
 
+use crate::graph;
 use crate::{ComputedData, Float};
 
-pub fn learn(data: &ComputedData<Float>, iteration: usize, learning_rate: Float) -> (Float, Float) {
+pub fn learn(
+	data: &ComputedData<Float>,
+	iteration: usize,
+	learning_rate: Float,
+) -> hmerr::Result<(Float, Float)> {
 	let mut theta0 = 0.0;
 	let mut theta1 = 0.0;
 
-	for _ in 0..iteration {
+	let root = graph::training::root()?;
+
+	let mut next_frame = 0;
+	for i in 0..iteration {
 		(theta0, theta1) = guess(data, theta0, theta1, learning_rate);
+
+		if i == next_frame {
+			let (dtheta0, dtheta1) = denormalize_theta(theta0, theta1, data);
+			graph::training::graph(&root, &data, dtheta0, dtheta1)?;
+			next_frame += match iteration {
+				0..=100 => 1,
+				_ => 100,
+			};
+			print!("\rIteration: {i}/{iteration}")
+		}
 	}
 
 	dbg!(theta0, theta1);
 
-	denormalize_theta(theta0, theta1, data)
+	Ok(denormalize_theta(theta0, theta1, data))
 }
 
 fn denormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {
