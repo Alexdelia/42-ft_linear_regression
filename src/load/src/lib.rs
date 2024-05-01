@@ -36,7 +36,7 @@ where
 	}
 
 	if ret.is_empty() {
-		return pfe!(
+		pfe!(
 			"CSV file should contain at least one Coord",
 			f:path.clone(),
 		)?;
@@ -56,6 +56,7 @@ where
 {
 	let index = i + 2;
 
+	#[allow(clippy::needless_return_with_question_mark)]
 	if record.len() < 2 {
 		return pfe!(
 			"CSV Coord should have 2 elements\n<x> <y>",
@@ -65,8 +66,8 @@ where
 	}
 
 	Ok(Coord {
-		x: parse_cell(&path, index, &record, false)?,
-		y: parse_cell(&path, index, &record, true)?,
+		x: parse_cell(path, index, &record, false)?,
+		y: parse_cell(path, index, &record, true)?,
 	})
 }
 
