@@ -18,6 +18,8 @@ pub struct DataSet<F> {
 pub struct AnalyzedData<F> {
 	pub min: Coord<F>,
 	pub max: Coord<F>,
+	pub range: Coord<F>,
+	pub mean: Coord<F>,
 }
 
 pub fn compute(data: ParsedData<Float>) -> ComputedData<Float> {

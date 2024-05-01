@@ -14,10 +14,17 @@ pub fn learn(data: &ComputedData<Float>, iteration: usize, learning_rate: Float)
 
 	dbg!(theta0, theta1);
 
-	unnormalize_theta(theta0, theta1, &data)
+	denormalize_theta(theta0, theta1, &data)
 }
 
-fn unnormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {}
+fn denormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {
+	let range_ratio = data.attr.range.y / data.attr.range.x;
+
+	let theta1 = theta1 * range_ratio;
+	let theta0 = theta0 * range_ratio + data.attr.mean.y - theta1 * data.attr.mean.x;
+
+	(theta0, theta1)
+}
 
 fn guess(
 	data: &ComputedData<Float>,
