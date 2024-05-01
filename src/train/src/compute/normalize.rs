@@ -8,8 +8,8 @@ pub fn normalize(data: &ParsedData<Float>, analyzed: &AnalyzedData<Float>) -> Pa
 	let mut normalized = Vec::with_capacity(data.len());
 
 	for Coord { x, y } in data.iter() {
-		let x = (x - analyzed.min.x) / (analyzed.max.x - analyzed.min.x);
-		let y = (y - analyzed.min.y) / (analyzed.max.y - analyzed.min.y);
+		let x = (x - analyzed.min.x) / (analyzed.range.x);
+		let y = (y - analyzed.min.y) / (analyzed.range.y);
 
 		normalized.push(Coord { x, y });
 	}

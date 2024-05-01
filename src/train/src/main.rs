@@ -30,6 +30,9 @@ fn main() -> hmerr::Result<()> {
 
 	let (theta0, theta1) = learn::learn(&data, iteration, learning_rate);
 
+	let mut diff_sum_abs = 0.0;
+	let mut diff_sum = 0.0;
+
 	for Coord { x, y } in data.set.raw.iter() {
 		eprintln!(
 			"{x}km\n= {y}€\n~ {estimate}€\n",
@@ -37,9 +40,13 @@ fn main() -> hmerr::Result<()> {
 			y = y,
 			estimate = estimate::estimate(theta0, theta1, *x),
 		);
+
+		diff_sum_abs += (estimate::estimate(theta0, theta1, *x) - y).abs();
+		diff_sum += estimate::estimate(theta0, theta1, *x) - y;
 	}
 
 	dbg!(theta0, theta1);
+	dbg!(diff_sum_abs, diff_sum);
 
 	graph::graph(&data, theta0, theta1)?;
 
