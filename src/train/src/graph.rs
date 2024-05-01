@@ -12,6 +12,16 @@ const REGRESSION_LINE_STYLE: ShapeStyle = ShapeStyle {
 	filled: true,
 	stroke_width: 2,
 };
+const DATA_DOT_STYLE: ShapeStyle = ShapeStyle {
+	color: RGBAColor(16, 227, 82, 1.0),
+	filled: true,
+	stroke_width: 1,
+};
+const DIFF_STYLE: ShapeStyle = ShapeStyle {
+	color: RGBAColor(255, 0, 0, 1.0),
+	filled: true,
+	stroke_width: 1,
+};
 
 pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr::Result<()> {
 	std::fs::create_dir_all(
@@ -43,25 +53,9 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 	for c in data.set.raw.iter() {
 		chart.draw_series(LineSeries::new(
 			[(c.x, c.y), (c.x, estimate::estimate(theta0, theta1, c.x))],
-			&RED,
+			DIFF_STYLE,
 		))?;
 	}
-
-	// data set as points
-	chart
-		.draw_series(
-			data.set
-				.raw
-				.iter()
-				.map(|r| Circle::new((r.x, r.y), 3, RGBColor(16, 227, 82).filled())),
-		)?
-		.label(format!(
-			"estimation diff sum = {diff:.2}",
-			diff = data.diff(theta0, theta1)
-		))
-		.legend(|(x, y)| {
-			PathElement::new(vec![(x, y), (x + 20, y)], RGBColor(16, 227, 82).filled())
-		});
 
 	// regression line
 	chart
@@ -73,7 +67,21 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 			REGRESSION_LINE_STYLE,
 		))?
 		.label(format!("y = {theta0:.2} + ({theta1:.2} * x)"))
-		.legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], REGRESSION_LINE_STYLE));
+		.legend(|(x, y)| PathElement::new(vec![(x, y), (x + 16, y)], REGRESSION_LINE_STYLE));
+
+	// data set as points
+	chart
+		.draw_series(
+			data.set
+				.raw
+				.iter()
+				.map(|r| Circle::new((r.x, r.y), 3, DATA_DOT_STYLE)),
+		)?
+		.label(format!(
+			"estimation diff sum = {diff:.4}",
+			diff = data.diff(theta0, theta1)
+		))
+		.legend(|(x, y)| PathElement::new(vec![(x, y), (x + 16, y)], DIFF_STYLE));
 
 	chart
 		.configure_series_labels()
