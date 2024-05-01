@@ -40,7 +40,7 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 	chart.configure_mesh().draw()?;
 
 	// estimation offset with data set
-	for c in data.set.iter() {
+	for c in data.set.raw.iter() {
 		chart.draw_series(LineSeries::new(
 			[(c.x, c.y), (c.x, estimate::estimate(theta0, theta1, c.x))],
 			&RED,
@@ -50,6 +50,7 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 	// data set as points
 	chart.draw_series(
 		data.set
+			.raw
 			.iter()
 			.map(|r| Circle::new((r.x, r.y), 3, RGBColor(16, 227, 82).filled())),
 	)?;
@@ -93,12 +94,18 @@ fn compute_graph_coord(
 	theta1: Float,
 ) -> GraphCoord<Float> {
 	let min = Coord {
-		x: data.min.x,
-		y: Float::min(data.min.y, estimate::estimate(theta0, theta1, data.min.x)),
+		x: data.attr.min.x,
+		y: Float::min(
+			data.attr.min.y,
+			estimate::estimate(theta0, theta1, data.attr.min.x),
+		),
 	};
 	let max = Coord {
-		x: data.max.x,
-		y: Float::max(data.max.y, estimate::estimate(theta0, theta1, data.max.x)),
+		x: data.attr.max.x,
+		y: Float::max(
+			data.attr.max.y,
+			estimate::estimate(theta0, theta1, data.attr.max.x),
+		),
 	};
 	let center = Coord {
 		x: (min.x + max.x) / 2.0,
@@ -109,8 +116,8 @@ fn compute_graph_coord(
 		v + ((center * SCALE_PERCENTAGE).abs() * if high { 1.0 } else { -1.0 })
 	};
 
-	let line_min_x = scale(data.min.x, center.x / 2.0, false);
-	let line_max_x = scale(data.max.x, center.x / 2.0, true);
+	let line_min_x = scale(data.attr.min.x, center.x / 2.0, false);
+	let line_max_x = scale(data.attr.max.x, center.x / 2.0, true);
 	let line = (
 		Coord {
 			x: line_min_x,
