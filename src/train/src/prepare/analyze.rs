@@ -42,6 +42,7 @@ pub fn analyze(data: &ParsedData<Float>) -> AnalyzedData<Float> {
 		x: max.x - min.x,
 		y: max.y - min.y,
 	};
+	let range_ratio = range.y / range.x;
 
 	let mean = Coord {
 		x: sum.x / data.len() as Float,
@@ -52,6 +53,7 @@ pub fn analyze(data: &ParsedData<Float>) -> AnalyzedData<Float> {
 		min,
 		max,
 		range,
+		range_ratio,
 		mean,
 	}
 }

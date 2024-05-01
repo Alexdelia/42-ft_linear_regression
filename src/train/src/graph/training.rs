@@ -7,7 +7,7 @@ use super::{chart_config, coord::compute_graph_coord, draw, graph_output, r#cons
 pub fn root() -> hmerr::Result<DrawingArea<BitMapBackend<'static>, Shift>> {
 	let output = graph_output(OUTPUT_TRAINING_GRAPH)?;
 
-	Ok(BitMapBackend::gif(&output, GRAPH_SIZE, GIF_FRAME_DELAY)?.into_drawing_area())
+	Ok(BitMapBackend::gif(&output, TRAINING_GRAPH_SIZE, GIF_FRAME_DELAY)?.into_drawing_area())
 }
 
 pub fn graph<'a, DB>(
@@ -15,6 +15,7 @@ pub fn graph<'a, DB>(
 	data: &ComputedData<Float>,
 	theta0: Float,
 	theta1: Float,
+	iteration: usize,
 ) -> hmerr::Result<()>
 where
 	DB: DrawingBackend,
@@ -25,7 +26,11 @@ where
 	root.fill(&WHITE)?;
 
 	let mut chart = ChartBuilder::on(root);
-	let mut chart = chart_config(&mut chart, &graph_coord, TRAINING_TITLE)?;
+	let mut chart = chart_config(
+		&mut chart,
+		&graph_coord,
+		&format!("{TRAINING_TITLE} ({iteration})"),
+	)?;
 
 	draw::graph(&mut chart, graph_coord, data, theta0, theta1)?;
 

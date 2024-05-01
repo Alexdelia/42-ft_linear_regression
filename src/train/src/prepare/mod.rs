@@ -20,6 +20,7 @@ pub struct AnalyzedData<F> {
 	pub min: Coord<F>,
 	pub max: Coord<F>,
 	pub range: Coord<F>,
+	pub range_ratio: F,
 	pub mean: Coord<F>,
 }
 

@@ -1,4 +1,4 @@
-mod r#const;
+pub mod r#const;
 mod coord;
 mod draw;
 pub mod result;

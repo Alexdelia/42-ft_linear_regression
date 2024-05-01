@@ -7,7 +7,7 @@ use super::{chart_config, coord::compute_graph_coord, draw, graph_output, r#cons
 pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr::Result<()> {
 	let output = graph_output(OUTPUT_RESULT_GRAPH)?;
 
-	let root = BitMapBackend::new(&output, GRAPH_SIZE).into_drawing_area();
+	let root = BitMapBackend::new(&output, RESULT_GRAPH_SIZE).into_drawing_area();
 
 	root.fill(&WHITE)?;
 

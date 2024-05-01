@@ -10,7 +10,7 @@ use std::env;
 type Float = f64;
 
 const DEFAULT_DATA_FILE: &str = "ressource/data.csv";
-const DEFAULT_ITERATION: usize = 100000;
+const DEFAULT_ITERATION: usize = 2usize.pow(16);
 const DEFAULT_LEARNING_RATE: Float = 0.01;
 
 fn main() -> hmerr::Result<()> {
@@ -21,6 +21,8 @@ fn main() -> hmerr::Result<()> {
 	let csv = arg::csv(&args);
 	let iteration = arg::iteration(&args)?;
 	let learning_rate = arg::learning_rate(&args)?;
+
+	println!();
 
 	let data = load::parse(csv)?;
 
@@ -38,7 +40,6 @@ fn main() -> hmerr::Result<()> {
 	}
 
 	dbg!(theta0, theta1);
-	dbg!(data.diff(theta0, theta1));
 
 	graph::result::graph(&data, theta0, theta1)?;
 

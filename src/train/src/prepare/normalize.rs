@@ -33,6 +33,7 @@ mod tests {
 			min: Coord { x: 1.0, y: 1.0 },
 			max: Coord { x: 3.0, y: 3.0 },
 			range: Coord { x: 2.0, y: 2.0 },
+			range_ratio: 1.0,
 			mean: Coord { x: 2.0, y: 2.0 },
 		};
 

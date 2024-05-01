@@ -1,8 +1,11 @@
+use indicatif::ProgressIterator;
+
 use estimate::estimate;
 
 use load::Coord;
 
 use crate::graph;
+use crate::graph::r#const;
 use crate::{ComputedData, Float};
 
 pub fn learn(
@@ -16,18 +19,20 @@ pub fn learn(
 	let root = graph::training::root()?;
 
 	let mut next_frame = 0;
-	for i in 0..iteration {
-		(theta0, theta1) = guess(data, theta0, theta1, learning_rate);
-
+	for i in (0..iteration).progress() {
 		if i == next_frame {
 			let (dtheta0, dtheta1) = denormalize_theta(theta0, theta1, data);
-			graph::training::graph(&root, &data, dtheta0, dtheta1)?;
-			next_frame += match iteration {
-				0..=100 => 1,
-				_ => 100,
+			graph::training::graph(&root, &data, dtheta0, dtheta1, i)?;
+			next_frame += match next_frame {
+				0..=r#const::GIF_FRAME_START_PHASE => r#const::GIF_FRAME_START_STEP,
+				r#const::GIF_FRAME_MID_PHASE..=r#const::GIF_FRAME_END_PHASE => {
+					r#const::GIF_FRAME_MID_STEP
+				}
+				_ => r#const::GIF_FRAME_END_STEP,
 			};
-			print!("\rIteration: {i}/{iteration}")
 		}
+
+		(theta0, theta1) = guess(data, theta0, theta1, learning_rate);
 	}
 
 	dbg!(theta0, theta1);
@@ -36,10 +41,8 @@ pub fn learn(
 }
 
 fn denormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {
-	let range_ratio = data.attr.range.y / data.attr.range.x;
-
-	let theta1 = theta1 * range_ratio;
-	let theta0 = theta0 * range_ratio + data.attr.mean.y - theta1 * data.attr.mean.x;
+	let theta1 = theta1 * data.attr.range_ratio;
+	let theta0 = theta0 * data.attr.range_ratio + data.attr.mean.y - theta1 * data.attr.mean.x;
 
 	(theta0, theta1)
 }
