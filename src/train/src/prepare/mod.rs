@@ -1,4 +1,5 @@
 mod analyze;
+mod diff;
 mod normalize;
 
 use load::{Coord, ParsedData};

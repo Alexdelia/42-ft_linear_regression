@@ -48,12 +48,20 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 	}
 
 	// data set as points
-	chart.draw_series(
-		data.set
-			.raw
-			.iter()
-			.map(|r| Circle::new((r.x, r.y), 3, RGBColor(16, 227, 82).filled())),
-	)?;
+	chart
+		.draw_series(
+			data.set
+				.raw
+				.iter()
+				.map(|r| Circle::new((r.x, r.y), 3, RGBColor(16, 227, 82).filled())),
+		)?
+		.label(format!(
+			"estimation diff sum = {diff:.2}",
+			diff = data.diff(theta0, theta1)
+		))
+		.legend(|(x, y)| {
+			PathElement::new(vec![(x, y), (x + 20, y)], RGBColor(16, 227, 82).filled())
+		});
 
 	// regression line
 	chart
