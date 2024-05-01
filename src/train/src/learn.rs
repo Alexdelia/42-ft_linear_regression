@@ -14,7 +14,7 @@ pub fn learn(data: &ComputedData<Float>, iteration: usize, learning_rate: Float)
 
 	dbg!(theta0, theta1);
 
-	denormalize_theta(theta0, theta1, &data)
+	denormalize_theta(theta0, theta1, data)
 }
 
 fn denormalize_theta(theta0: Float, theta1: Float, data: &ComputedData<Float>) -> (Float, Float) {

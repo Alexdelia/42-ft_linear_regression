@@ -17,7 +17,7 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 	std::fs::create_dir_all(
 		std::path::Path::new(OUTPUT_GRAPH)
 			.parent()
-			.expect(format!("{OUTPUT_GRAPH} has no parent").as_str()),
+			.unwrap_or_else(|| panic!("{OUTPUT_GRAPH} has no parent")),
 	)?;
 
 	let root = BitMapBackend::new(OUTPUT_GRAPH, GRAPH_SIZE).into_drawing_area();
@@ -69,8 +69,8 @@ pub fn graph(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> hmerr:
 
 	chart
 		.configure_series_labels()
-		.border_style(&BLACK)
-		.background_style(&WHITE.mix(0.8))
+		.border_style(BLACK)
+		.background_style(WHITE.mix(0.8))
 		.label_font(TextStyle::from(("Roboto Mono", 16)).color(&RGBColor(42, 42, 42)))
 		.draw()?;
 

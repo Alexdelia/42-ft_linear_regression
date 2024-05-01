@@ -8,7 +8,7 @@ pub fn usage(args: &[String]) {
 		return;
 	}
 
-	let cmd = match args.get(0) {
+	let cmd = match args.first() {
 		Some(cmd) => cmd,
 		None => "cargo run",
 	};
