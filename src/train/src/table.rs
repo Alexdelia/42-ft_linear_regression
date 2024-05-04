@@ -39,6 +39,7 @@ pub fn table(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> () {
 			[Color::new("\u{1b}[1;31m", "\u{1b}[0m")],
 			(0, 3),
 		))
+		.modify(Rows::first(), Alignment::center())
 		.modify(Rows::new(1..), Alignment::right())
 		.to_string();
 
