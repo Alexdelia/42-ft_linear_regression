@@ -28,7 +28,7 @@ fn main() -> hmerr::Result<()> {
 
 	let data = prepare::compute(data);
 
-	let (theta0, theta1) = learn::learn(&data, iteration, learning_rate)?;
+	let (theta0, theta1) = learn::learn(&data, iteration, learning_rate, csv)?;
 
 	for Coord { x, y } in data.set.raw.iter() {
 		eprintln!(

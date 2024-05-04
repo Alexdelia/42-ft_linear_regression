@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use indicatif::ProgressIterator;
 
 use estimate::estimate;
@@ -8,15 +10,16 @@ use crate::graph;
 use crate::graph::r#const;
 use crate::{ComputedData, Float};
 
-pub fn learn(
+pub fn learn<P: AsRef<Path>>(
 	data: &ComputedData<Float>,
 	iteration: usize,
 	learning_rate: Float,
+	path: P,
 ) -> hmerr::Result<(Float, Float)> {
 	let mut theta0 = 0.0;
 	let mut theta1 = 0.0;
 
-	let root = graph::training::root()?;
+	let root = graph::training::root(path)?;
 
 	let mut next_frame = 0;
 	let mut step = 1;

@@ -4,13 +4,15 @@ mod draw;
 pub mod result;
 pub mod training;
 
+use std::path::Path;
+
 use plotters::{coord::types::RangedCoordf64, prelude::*};
 
 use crate::Float;
 
 use coord::GraphCoord;
 
-pub fn graph_output(filename: &str) -> hmerr::Result<String> {
+pub fn graph_output<P: AsRef<Path>>(path: P, filename: &str) -> hmerr::Result<String> {
 	std::fs::create_dir_all(r#const::OUTPUT_GRAPH_DIR)?;
 
 	Ok([r#const::OUTPUT_GRAPH_DIR, filename].join(""))

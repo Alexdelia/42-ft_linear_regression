@@ -1,10 +1,12 @@
+use std::path::Path;
+
 use plotters::{coord::Shift, prelude::*};
 
 use crate::{ComputedData, Float};
 
 use super::{chart_config, coord::compute_graph_coord, draw, graph_output, r#const::*};
 
-pub fn root() -> hmerr::Result<DrawingArea<BitMapBackend<'static>, Shift>> {
+pub fn root<P: AsRef<Path>>(path: P) -> hmerr::Result<DrawingArea<BitMapBackend<'static>, Shift>> {
 	let output = graph_output(OUTPUT_TRAINING_GRAPH)?;
 
 	Ok(BitMapBackend::gif(&output, TRAINING_GRAPH_SIZE, GIF_FRAME_DELAY)?.into_drawing_area())
