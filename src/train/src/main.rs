@@ -4,9 +4,11 @@ pub use prepare::ComputedData;
 mod learn;
 
 #[cfg(not(debug_assertions))]
+mod table;
+
+#[cfg(not(debug_assertions))]
 mod graph;
 
-use load::Coord;
 use std::env;
 
 type Float = f64;
@@ -32,16 +34,8 @@ fn main() -> hmerr::Result<()> {
 
 	let (theta0, theta1) = learn::learn(csv, &data, iteration, learning_rate)?;
 
-	for Coord { x, y } in data.set.raw.iter() {
-		eprintln!(
-			"{x}km\n= {y}€\n~ {estimate}€\n",
-			x = x,
-			y = y,
-			estimate = estimate::estimate(theta0, theta1, *x),
-		);
-	}
-
-	dbg!(theta0, theta1);
+	#[cfg(not(debug_assertions))]
+	table::table(&data, theta0, theta1);
 
 	#[cfg(not(debug_assertions))]
 	graph::result::graph(csv, &data, theta0, theta1)?;

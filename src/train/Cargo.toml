@@ -13,3 +13,4 @@ ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 plotters = "0.3.5"
 indicatif = "0.17.8"
+tabled = "0.15.0"
