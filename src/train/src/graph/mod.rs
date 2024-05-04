@@ -13,9 +13,18 @@ use crate::Float;
 use coord::GraphCoord;
 
 pub fn graph_output<P: AsRef<Path>>(path: P, filename: &str) -> hmerr::Result<String> {
-	std::fs::create_dir_all(r#const::OUTPUT_GRAPH_DIR)?;
+	let path = path
+		.as_ref()
+		.file_stem()
+		.expect("there is no path")
+		.to_str()
+		.expect("path is not a valid UTF-8 string");
 
-	Ok([r#const::OUTPUT_GRAPH_DIR, filename].join(""))
+	let dir = format!("{graph}{path}/", graph = r#const::OUTPUT_GRAPH_DIR,);
+
+	std::fs::create_dir_all(&dir)?;
+
+	Ok([dir.as_str(), filename].join(""))
 }
 
 pub fn chart_config<'a, 'b, DB>(

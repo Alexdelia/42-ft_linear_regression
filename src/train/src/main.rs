@@ -28,7 +28,7 @@ fn main() -> hmerr::Result<()> {
 
 	let data = prepare::compute(data);
 
-	let (theta0, theta1) = learn::learn(&data, iteration, learning_rate, csv)?;
+	let (theta0, theta1) = learn::learn(csv, &data, iteration, learning_rate)?;
 
 	for Coord { x, y } in data.set.raw.iter() {
 		eprintln!(
@@ -41,7 +41,7 @@ fn main() -> hmerr::Result<()> {
 
 	dbg!(theta0, theta1);
 
-	graph::result::graph(&data, theta0, theta1)?;
+	graph::result::graph(csv, &data, theta0, theta1)?;
 
 	Ok(())
 }

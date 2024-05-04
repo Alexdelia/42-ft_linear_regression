@@ -11,10 +11,10 @@ use crate::graph::r#const;
 use crate::{ComputedData, Float};
 
 pub fn learn<P: AsRef<Path>>(
+	path: P,
 	data: &ComputedData<Float>,
 	iteration: usize,
 	learning_rate: Float,
-	path: P,
 ) -> hmerr::Result<(Float, Float)> {
 	let mut theta0 = 0.0;
 	let mut theta1 = 0.0;
