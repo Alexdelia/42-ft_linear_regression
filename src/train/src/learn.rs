@@ -19,23 +19,19 @@ pub fn learn(
 	let root = graph::training::root()?;
 
 	let mut next_frame = 0;
+	let mut step = 1;
 	for i in (0..iteration).progress() {
 		if i == next_frame {
 			let (dtheta0, dtheta1) = denormalize_theta(theta0, theta1, data);
 			graph::training::graph(&root, &data, dtheta0, dtheta1, i)?;
-			next_frame += match next_frame {
-				0..=r#const::GIF_FRAME_START_PHASE => r#const::GIF_FRAME_START_STEP,
-				r#const::GIF_FRAME_MID_PHASE..=r#const::GIF_FRAME_END_PHASE => {
-					r#const::GIF_FRAME_MID_STEP
-				}
-				_ => r#const::GIF_FRAME_END_STEP,
-			};
+			next_frame += step;
+			if next_frame >= step * r#const::GIF_FRAME_STEP_THRESHOLD {
+				step = (step as Float * r#const::GIF_FRAME_STEP_MULTIPLIER).ceil() as usize;
+			}
 		}
 
 		(theta0, theta1) = guess(data, theta0, theta1, learning_rate);
 	}
-
-	dbg!(theta0, theta1);
 
 	Ok(denormalize_theta(theta0, theta1, data))
 }

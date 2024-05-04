@@ -29,7 +29,7 @@ where
 	let mut chart = chart_config(
 		&mut chart,
 		&graph_coord,
-		&format!("{TRAINING_TITLE} ({iteration})"),
+		&format!("{TRAINING_TITLE} (iteration {iteration})"),
 	)?;
 
 	draw::graph(&mut chart, graph_coord, data, theta0, theta1)?;

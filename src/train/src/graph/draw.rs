@@ -63,7 +63,7 @@ where
 			],
 			REGRESSION_LINE_STYLE,
 		))?
-		.label(format!("y = {theta0:.2} + ({theta1:.2} * x)"))
+		.label(format!("y = {theta0:.2} + ({theta1:.5} * x)"))
 		.legend(|(x, y)| PathElement::new(vec![(x, y), (x + 16, y)], REGRESSION_LINE_STYLE));
 
 	Ok(())
