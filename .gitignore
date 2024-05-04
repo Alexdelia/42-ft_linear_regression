@@ -1,6 +1,9 @@
 ### model ###
 /model.toml
 
+### graph output ###
+/graph/**/*
+
 ### binary ###
 /train
 /predict

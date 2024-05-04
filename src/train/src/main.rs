@@ -9,7 +9,7 @@ use std::env;
 
 type Float = f64;
 
-const DEFAULT_DATA_FILE: &str = "ressource/data.csv";
+const DEFAULT_DATA_FILE: &str = "ressource/42_provided.csv";
 const DEFAULT_ITERATION: usize = 2usize.pow(16);
 const DEFAULT_LEARNING_RATE: Float = 0.01;
 
