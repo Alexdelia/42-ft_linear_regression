@@ -5,6 +5,11 @@ use ansi::abbrev::{B, D, G, M, R};
 use csv::StringRecord;
 use hmerr::{ioe, pfe, ple, pwe};
 
+pub struct LoadedData<F> {
+	pub headers: Coord<String>,
+	pub set: ParsedData<F>,
+}
+
 pub type ParsedData<F> = Vec<Coord<F>>;
 
 pub struct Coord<F> {
@@ -12,12 +17,15 @@ pub struct Coord<F> {
 	pub y: F,
 }
 
-pub fn parse<P: AsRef<Path> + Clone, F: FromStr>(path: P) -> hmerr::Result<ParsedData<F>>
+const DEFAULT_X_HEADER: &str = "x";
+const DEFAULT_Y_HEADER: &str = "y";
+
+pub fn parse<P: AsRef<Path> + Clone, F: FromStr>(path: P) -> hmerr::Result<LoadedData<F>>
 where
 	String: From<P>,
 	<F as FromStr>::Err: std::error::Error + Sync + Send + 'static,
 {
-	let mut ret: ParsedData<F> = Vec::new();
+	let mut set: ParsedData<F> = Vec::new();
 
 	let mut rdr = csv::Reader::from_path(&path).map_err(|e| {
 		if !e.is_io_error() {
@@ -29,20 +37,31 @@ where
 		}
 	})?;
 
+	let headers: Coord<String> = match rdr.headers() {
+		Ok(h) => Coord {
+			x: h.get(0).unwrap_or(DEFAULT_X_HEADER).to_string(),
+			y: h.get(1).unwrap_or(DEFAULT_Y_HEADER).to_string(),
+		},
+		Err(_) => Coord {
+			x: DEFAULT_X_HEADER.to_string(),
+			y: DEFAULT_Y_HEADER.to_string(),
+		},
+	};
+
 	for (i, result) in rdr.records().enumerate() {
 		let record = result.map_err(|e| ioe!(path.clone(), e))?;
 
-		ret.push(parse_record(&path, i, record)?);
+		set.push(parse_record(&path, i, record)?);
 	}
 
-	if ret.is_empty() {
+	if set.is_empty() {
 		pfe!(
 			"CSV file should contain at least one Coord",
 			f:path.clone(),
 		)?;
 	}
 
-	Ok(ret)
+	Ok(LoadedData { headers, set })
 }
 
 fn parse_record<P: AsRef<Path> + Clone, F: FromStr>(

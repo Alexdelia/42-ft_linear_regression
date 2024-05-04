@@ -32,6 +32,7 @@ where
 		&mut chart,
 		&graph_coord,
 		&format!("{TRAINING_TITLE} (iteration {iteration})"),
+		&data.headers,
 	)?;
 
 	draw::graph(&mut chart, graph_coord, data, theta0, theta1)?;

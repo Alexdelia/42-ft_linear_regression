@@ -21,7 +21,7 @@ pub fn graph<P: AsRef<Path>>(
 	let graph_coord = compute_graph_coord(data, theta0, theta1);
 
 	let mut chart = ChartBuilder::on(&root);
-	let mut chart = chart_config(&mut chart, &graph_coord, RESULT_TITLE)?;
+	let mut chart = chart_config(&mut chart, &graph_coord, RESULT_TITLE, &data.headers)?;
 
 	draw::graph(&mut chart, graph_coord, data, theta0, theta1)?;
 

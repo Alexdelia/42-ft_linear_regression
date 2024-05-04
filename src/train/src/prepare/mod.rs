@@ -2,11 +2,12 @@ mod analyze;
 mod diff;
 mod normalize;
 
-use load::{Coord, ParsedData};
+use load::{Coord, LoadedData, ParsedData};
 
 use crate::Float;
 
 pub struct ComputedData<F> {
+	pub headers: Coord<String>,
 	pub set: DataSet<F>,
 	pub attr: AnalyzedData<F>,
 }
@@ -24,14 +25,15 @@ pub struct AnalyzedData<F> {
 	pub mean: Coord<F>,
 }
 
-pub fn compute(data: ParsedData<Float>) -> ComputedData<Float> {
-	let analyzed = analyze::analyze(&data);
+pub fn compute(data: LoadedData<Float>) -> ComputedData<Float> {
+	let analyzed = analyze::analyze(&data.set);
 
-	let normalized = normalize::normalize(&data, &analyzed);
+	let normalized = normalize::normalize(&data.set, &analyzed);
 
 	ComputedData {
+		headers: data.headers,
 		set: DataSet {
-			raw: data,
+			raw: data.set,
 			normalized,
 		},
 		attr: analyzed,
