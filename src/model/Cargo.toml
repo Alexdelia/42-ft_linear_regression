@@ -1,0 +1,11 @@
+[package]
+name = "model"
+version = "0.1.0"
+edition = "2021"
+authors = ["adelille"]
+description = "upload or download a linear regresssion model (theta0, theta1)"
+
+[dependencies]
+hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }
+serde = { version = "1.0.200", features = ["derive"] }
+toml = "0.8.12"

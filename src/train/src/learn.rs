@@ -6,12 +6,14 @@ use estimate::estimate;
 
 use load::Coord;
 
+#[cfg(not(debug_assertions))]
 use crate::graph;
+#[cfg(not(debug_assertions))]
 use crate::graph::r#const;
 use crate::{ComputedData, Float};
 
 pub fn learn<P: AsRef<Path>>(
-	path: P,
+	_path: P,
 	data: &ComputedData<Float>,
 	iteration: usize,
 	learning_rate: Float,
@@ -19,14 +21,18 @@ pub fn learn<P: AsRef<Path>>(
 	let mut theta0 = 0.0;
 	let mut theta1 = 0.0;
 
-	let root = graph::training::root(path)?;
+	#[cfg(not(debug_assertions))]
+	let root = graph::training::root(_path)?;
 
+	#[cfg(not(debug_assertions))]
 	let mut next_frame = 0;
+	#[cfg(not(debug_assertions))]
 	let mut step = 1;
-	for i in (0..iteration).progress() {
-		if i == next_frame {
+	for _i in (0..iteration).progress() {
+		#[cfg(not(debug_assertions))]
+		if _i == next_frame {
 			let (dtheta0, dtheta1) = denormalize_theta(theta0, theta1, data);
-			graph::training::graph(&root, data, dtheta0, dtheta1, i)?;
+			graph::training::graph(&root, data, dtheta0, dtheta1, _i)?;
 			next_frame += step;
 			if next_frame >= step * r#const::GIF_FRAME_STEP_THRESHOLD {
 				step = (step as Float * r#const::GIF_FRAME_STEP_MULTIPLIER).ceil() as usize;

@@ -7,6 +7,6 @@ description = "predict y based on x"
 
 [dependencies]
 estimate = { path = "../estimate" }
-load = { path = "../load" }
+model = { path = "../model" }
 ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }

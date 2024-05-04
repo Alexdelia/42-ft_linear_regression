@@ -1,8 +1,10 @@
 mod arg;
 mod prepare;
 pub use prepare::ComputedData;
-mod graph;
 mod learn;
+
+#[cfg(not(debug_assertions))]
+mod graph;
 
 use load::Coord;
 use std::env;
@@ -41,7 +43,13 @@ fn main() -> hmerr::Result<()> {
 
 	dbg!(theta0, theta1);
 
+	#[cfg(not(debug_assertions))]
 	graph::result::graph(csv, &data, theta0, theta1)?;
+
+	model::Model {
+		theta0,
+		theta1,
+	}.write()?;
 
 	Ok(())
 }

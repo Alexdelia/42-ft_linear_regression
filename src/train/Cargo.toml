@@ -8,6 +8,7 @@ description = "train on given data to generate theta0 and theta1"
 [dependencies]
 estimate = { path = "../estimate" }
 load = { path = "../load" }
+model = { path = "../model" }
 ansi = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 hmerr = { git = "https://github.com/Alexdelia/yahmrslib.git" }
 plotters = "0.3.5"
