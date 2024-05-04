@@ -24,7 +24,7 @@ fn main() -> hmerr::Result<()> {
 
 	let x = arg::x(&args)?;
 
-	println!("{y}", y=estimate(theta0, theta1, x));
+	println!("{y}", y = estimate(theta0, theta1, x));
 
 	Ok(())
 }
