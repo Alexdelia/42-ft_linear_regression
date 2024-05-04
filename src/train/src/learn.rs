@@ -26,7 +26,7 @@ pub fn learn<P: AsRef<Path>>(
 	for i in (0..iteration).progress() {
 		if i == next_frame {
 			let (dtheta0, dtheta1) = denormalize_theta(theta0, theta1, data);
-			graph::training::graph(&root, &data, dtheta0, dtheta1, i)?;
+			graph::training::graph(&root, data, dtheta0, dtheta1, i)?;
 			next_frame += step;
 			if next_frame >= step * r#const::GIF_FRAME_STEP_THRESHOLD {
 				step = (step as Float * r#const::GIF_FRAME_STEP_MULTIPLIER).ceil() as usize;

@@ -12,8 +12,8 @@ pub fn root<P: AsRef<Path>>(path: P) -> hmerr::Result<DrawingArea<BitMapBackend<
 	Ok(BitMapBackend::gif(&output, TRAINING_GRAPH_SIZE, GIF_FRAME_DELAY)?.into_drawing_area())
 }
 
-pub fn graph<'a, DB>(
-	root: &'a DrawingArea<DB, Shift>,
+pub fn graph<DB>(
+	root: &DrawingArea<DB, Shift>,
 	data: &ComputedData<Float>,
 	theta0: Float,
 	theta1: Float,

@@ -25,8 +25,8 @@ where
 	Ok(())
 }
 
-fn estimation_offset<'a, 'b, DB>(
-	chart: &mut ChartContext<'a, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
+fn estimation_offset<DB>(
+	chart: &mut ChartContext<'_, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
 	data: &ComputedData<Float>,
 	theta0: Float,
 	theta1: Float,
@@ -45,8 +45,8 @@ where
 	Ok(())
 }
 
-fn regression_line<'a, 'b, DB>(
-	chart: &mut ChartContext<'a, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
+fn regression_line<DB>(
+	chart: &mut ChartContext<'_, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
 	graph_coord: &GraphCoord<Float>,
 	theta0: Float,
 	theta1: Float,
@@ -69,8 +69,8 @@ where
 	Ok(())
 }
 
-fn data_points<'a, 'b, DB>(
-	chart: &mut ChartContext<'a, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
+fn data_points<DB>(
+	chart: &mut ChartContext<'_, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>,
 	data: &ComputedData<Float>,
 	theta0: Float,
 	theta1: Float,

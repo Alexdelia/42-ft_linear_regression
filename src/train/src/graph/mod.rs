@@ -27,8 +27,8 @@ pub fn graph_output<P: AsRef<Path>>(path: P, filename: &str) -> hmerr::Result<St
 	Ok([dir.as_str(), filename].join(""))
 }
 
-pub fn chart_config<'a, 'b, DB>(
-	chart: &mut ChartBuilder<'a, 'b, DB>,
+pub fn chart_config<'a, DB>(
+	chart: &mut ChartBuilder<'a, '_, DB>,
 	graph_coord: &GraphCoord<Float>,
 	title: &str,
 ) -> hmerr::Result<ChartContext<'a, DB, Cartesian2d<RangedCoordf64, RangedCoordf64>>>
