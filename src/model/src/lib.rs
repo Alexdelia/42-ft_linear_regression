@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use hmerr::ioe;
 
@@ -18,7 +18,8 @@ impl<F: Serialize> Model<F> {
 
 		let str_data = toml::to_string(&self)?;
 
-		file.write_all(str_data.as_bytes()).map_err(|e| ioe!(MODEL_PATH, e))?;
+		file.write_all(str_data.as_bytes())
+			.map_err(|e| ioe!(MODEL_PATH, e))?;
 
 		Ok(())
 	}
@@ -31,4 +32,3 @@ impl<F: for<'de> Deserialize<'de>> Model<F> {
 		Ok(toml::from_str(&str_data)?)
 	}
 }
-

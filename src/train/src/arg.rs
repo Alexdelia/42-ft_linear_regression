@@ -13,7 +13,7 @@ pub fn usage(args: &[String]) {
 		None => "cargo run",
 	};
 
-	println!("usage: {B}{cmd} {M}<CSV> <iteration> <learning rate>{D}\n");
+	println!("usage: {B}{cmd} {M}[CSV] [iteration] [learning rate]{D}\n");
 }
 
 pub fn csv(args: &[String]) -> &str {
@@ -21,7 +21,7 @@ pub fn csv(args: &[String]) -> &str {
 		arg
 	} else {
 		println!(
-			"no {B}{M}<CSV>{D} file specified, using default file {B}{M}{DEFAULT_DATA_FILE}{D}"
+			"no {B}{M}[CSV]{D} file specified, using default file {B}{M}{DEFAULT_DATA_FILE}{D}"
 		);
 		DEFAULT_DATA_FILE
 	}
@@ -31,14 +31,14 @@ pub fn iteration(args: &[String]) -> hmerr::Result<usize> {
 	Ok(if let Some(arg) = args.get(2) {
 		arg.parse::<usize>().map_err(|e| {
 			se!(
-				format!("could not {B}{R}parse{D} {B}{M}<iteration>{D}"),
+				format!("could not {B}{R}parse{D} {B}{M}[iteration]{D}"),
 				"usize",
 				arg,
 				s:e,
 			)
 		})?
 	} else {
-		println!("no {B}{M}<iteration>{D} specified, using default iteration {B}{M}{DEFAULT_ITERATION}{D}");
+		println!("no {B}{M}[iteration]{D} specified, using default iteration {B}{M}{DEFAULT_ITERATION}{D}");
 		DEFAULT_ITERATION
 	})
 }
@@ -47,7 +47,7 @@ pub fn learning_rate(args: &[String]) -> hmerr::Result<Float> {
 	Ok(if let Some(arg) = args.get(3) {
 		arg.parse::<Float>().map_err(|e| {
 			se!(
-				format!("could not {B}{R}parse{D} {B}{M}<learning rate>{D}"),
+				format!("could not {B}{R}parse{D} {B}{M}[learning rate]{D}"),
 				"float",
 				arg,
 				s:e,
@@ -55,7 +55,7 @@ pub fn learning_rate(args: &[String]) -> hmerr::Result<Float> {
 		})?
 	} else {
 		println!(
-			"no {B}{M}<learning rate>{D} specified, using default learning rate {B}{M}{DEFAULT_LEARNING_RATE}{D}"
+			"no {B}{M}[learning rate]{D} specified, using default learning rate {B}{M}{DEFAULT_LEARNING_RATE}{D}"
 		);
 		DEFAULT_LEARNING_RATE
 	})

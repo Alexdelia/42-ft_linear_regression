@@ -46,10 +46,7 @@ fn main() -> hmerr::Result<()> {
 	#[cfg(not(debug_assertions))]
 	graph::result::graph(csv, &data, theta0, theta1)?;
 
-	model::Model {
-		theta0,
-		theta1,
-	}.write()?;
+	model::Model { theta0, theta1 }.write()?;
 
 	Ok(())
 }
