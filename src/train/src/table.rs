@@ -7,7 +7,7 @@ use estimate::estimate;
 
 use crate::{ComputedData, Float};
 
-pub fn table(data: &ComputedData<Float>, theta0: Float, theta1: Float) -> () {
+pub fn table(data: &ComputedData<Float>, theta0: Float, theta1: Float) {
 	let mut builder = Builder::default();
 
 	builder.push_record([
