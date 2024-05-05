@@ -20,7 +20,7 @@ It contains those programs:
 				<img src="https://github.com/Alexdelia/42-ft_linear_regression/blob/main/graph/42_provided/result.png" alt="linear regression on 42 provided dataset">
 			</td>
 			<td>
-				<img src="https://github.com/Alexdelia/42-ft_linear_regression/blob/main/graph/42_provided/result.png" alt="linear regression on basic dataset">
+				<img src="https://github.com/Alexdelia/42-ft_linear_regression/blob/main/graph/basic/result.png" alt="linear regression on basic dataset">
 			</td>
 		</tr>
 	</table>
